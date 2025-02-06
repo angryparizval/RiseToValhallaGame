@@ -4,6 +4,7 @@ import os
 import time
 import random
 import sys
+import shutil
 
 CritChanceBonus = 0
 CounterDamage = 0
@@ -17,24 +18,166 @@ ThornsDamage = 0
 StrafeItem = 0
 
 
-os.system('mode con:cols=170 lines=40')
+#os.system('mode con:cols=170 lines=40')
 os.system('cls')
 os.system('color 0f')
 
 
 
+#Prints out string letter by letter. Also makes sure words are not cut off
+def print_slow(text):
+  # Get terminal size
+  columns, rows = shutil.get_terminal_size()
 
+  # Split the text into words
+  words = text.split(" ")
+  current_line = ""
 
-
-
-def print_slow(str):
-    for letter in str:
+  for word in words:
+    # If adding the next word exceeds the terminal width, print the current line and start a new one
+    if len(current_line) + len(word) + 1 > columns:
+      # Print current line and move to the next line
+      for letter in current_line:
         sys.stdout.write(letter)
         sys.stdout.flush()
-        time.sleep(0.063)
+        time.sleep(0.050)
+      sys.stdout.write("\n")
+      current_line = word  # Start a new line with the current word
+    else:
+      # Add the word to the current line
+      if current_line:
+        current_line += " " + word
+      else:
+        current_line = word
+
+  # Print the last line
+  if current_line:
+    for letter in current_line:
+      sys.stdout.write(letter)
+      sys.stdout.flush()
+      time.sleep(0.050)
+    sys.stdout.write("\n")
+
+#Puts text in true center
+def center_text(text):
+  # Get terminal size
+  columns, rows = shutil.get_terminal_size()
+
+  # Calculate center position
+  text_lines = text.split("\n")
+  max_line_length = max(len(line) for line in text_lines)
+    
+  start_row = (rows - len(text_lines)) // 2
+  start_col = (columns - max_line_length) // 2
+
+  # Print empty lines to center vertically
+  print("\n" * start_row, end="")
+
+  # Print text centered horizontally
+  for line in text_lines:
+        print(" " * start_col + line)
+
+def printSlowCentered(text):
+  columns, _ = shutil.get_terminal_size()
+  start_col = (columns - len(text)) // 2
+  print(" " * start_col, end="")  # Add spaces before the slow print
+  print_slow(text)
+
+def printSlowTrueCentered(text):
+  # Get terminal size
+  columns, rows = shutil.get_terminal_size()
+
+  # Split text into multiple lines (handles multi-line text correctly)
+  text_lines = text.split("\n")
+    
+  # Calculate vertical centering
+  start_row = (rows - len(text_lines)) // 2
+
+  # Print empty lines to push text downward for vertical centering
+  print("\n" * start_row, end="")
+
+  # Print each line centered horizontally
+  for line in text_lines:
+    start_col = (columns - len(line)) // 2
+    print(" " * start_col, end="")  # Add spaces before slow print
+    print_slow(line)  # Slow print the line
+    print()  # Move to the next line
+
+def scroll():
+  count=20
+  for i in range(0,20,1):
+   print('\n')
+   time.sleep(.10)
 
 
 
+def credits():
+  os.system('color 0a')
+  time.sleep(.20)
+  os.system('color 8a')
+  time.sleep(.20)
+  os.system('color 7a')
+  time.sleep(.20)
+  os.system('color fa')
+  time.sleep(.5)
+  riskyLogo = '''
+
+     ▄████████  ▄█     ▄████████    ▄█   ▄█▄ ▄██   ▄           ▄████████     ███     ███    █▄  ████████▄   ▄█   ▄██████▄     ▄████████ 
+    ███    ███ ███    ███    ███   ███ ▄███▀ ███   ██▄        ███    ███ ▀█████████▄ ███    ███ ███   ▀███ ███  ███    ███   ███    ███ 
+    ███    ███ ███▌   ███    █▀    ███▐██▀   ███▄▄▄███        ███    █▀     ▀███▀▀██ ███    ███ ███    ███ ███▌ ███    ███   ███    █▀  
+   ▄███▄▄▄▄██▀ ███▌   ███         ▄█████▀    ▀▀▀▀▀▀███        ███            ███   ▀ ███    ███ ███    ███ ███▌ ███    ███   ███        
+   ▀▀███▀▀▀▀▀   ███▌ ▀███████████ ▀▀█████▄    ▄██   ███      ▀███████████     ███     ███    ███ ███    ███ ███▌ ███    ███ ▀███████████ 
+   ▀███████████ ███           ███   ███▐██▄   ███   ███               ███     ███     ███    ███ ███    ███ ███  ███    ███          ███ 
+     ███    ███ ███     ▄█    ███   ███ ▀███▄ ███   ███         ▄█    ███     ███     ███    ███ ███   ▄███ ███  ███    ███    ▄█    ███ 
+     ███    ███ █▀    ▄████████▀    ███   ▀█▀  ▀█████▀        ▄████████▀     ▄████▀   ████████▀  ████████▀  █▀    ▀██████▀   ▄████████▀  
+     ███    ███                     ▀                                                                                                    
+      '''
+  center_text(riskyLogo)
+
+  time.sleep(.65)
+  scroll()
+
+  os.system('cls')
+  time.sleep(.2)
+  os.system('color 7e')
+  time.sleep(.2)
+  os.system('color 8e')
+  time.sleep(.2)
+  os.system('color 0e')
+  time.sleep(.35)
+
+  riseLogo = '''
+██████╗ ██╗███████╗███████╗    ████████╗ ██████╗     ██╗   ██╗ █████╗ ██╗     ██╗  ██╗ █████╗ ██╗     ██╗      █████╗ 
+██╔══██╗██║██╔════╝██╔════╝    ╚══██╔══╝██╔═══██╗    ██║   ██║██╔══██╗██║     ██║  ██║██╔══██╗██║     ██║     ██╔══██╗
+██████╔╝██║███████╗█████╗         ██║   ██║   ██║    ██║   ██║███████║██║     ███████║███████║██║     ██║     ███████║
+██╔══██╗██║╚════██║██╔══╝         ██║   ██║   ██║    ╚██╗ ██╔╝██╔══██║██║     ██╔══██║██╔══██║██║     ██║     ██╔══██║
+██║  ██║██║███████║███████╗       ██║   ╚██████╔╝     ╚████╔╝ ██║  ██║███████╗██║  ██║██║  ██║███████╗███████╗██║  ██║
+╚═╝  ╚═╝╚═╝╚══════╝╚══════╝       ╚═╝    ╚═════╝       ╚═══╝  ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝
+'''
+  center_text(riseLogo)
+  print("\n" * 10, end="")
+
+
+  printSlowCentered('Press Enter To Begin')
+  input('')
+  
+  scroll()
+
+  os.system('cls')
+  time.sleep(.01)
+  printSlowTrueCentered('Play At Your Own Risk!')
+  time.sleep(1.75)
+  os.system('cls')
+  time.sleep(1)
+
+
+def intro_talk():
+  global player_name
+  printSlowTrueCentered('*All Answers Are Character Sensitive And An Empty Response Is NOT An Acceptable Response!*\n\n\nFeel Free To Let Us Know About Any Bugs Or Ideas For How To Improve Our Game!')
+  time.sleep(2)
+  os.system('color f')
+  os.system('cls')
+  time.sleep(.75)
 
 
 def askSave_name():
@@ -81,191 +224,29 @@ def askSave_class():
 
 
 
-
-
-def credits():
-  os.system('color 0a')
-  time.sleep(.25)
-  os.system('color 8a')
-  time.sleep(.25)
-  os.system('color 7a')
-  time.sleep(.25)
-  os.system('color fa')
-  time.sleep(.5)
-  print('''\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n
-
-                    ▄████████  ▄█     ▄████████    ▄█   ▄█▄ ▄██   ▄           ▄████████     ███     ███    █▄  ████████▄   ▄█   ▄██████▄     ▄████████ 
-                   ███    ███ ███    ███    ███   ███ ▄███▀ ███   ██▄        ███    ███ ▀█████████▄ ███    ███ ███   ▀███ ███  ███    ███   ███    ███ 
-                   ███    ███ ███▌   ███    █▀    ███▐██▀   ███▄▄▄███        ███    █▀     ▀███▀▀██ ███    ███ ███    ███ ███▌ ███    ███   ███    █▀  
-                  ▄███▄▄▄▄██▀ ███▌   ███         ▄█████▀    ▀▀▀▀▀▀███        ███            ███   ▀ ███    ███ ███    ███ ███▌ ███    ███   ███        
-                 ▀▀███▀▀▀▀▀   ███▌ ▀███████████ ▀▀█████▄    ▄██   ███      ▀███████████     ███     ███    ███ ███    ███ ███▌ ███    ███ ▀███████████ 
-                 ▀███████████ ███           ███   ███▐██▄   ███   ███               ███     ███     ███    ███ ███    ███ ███  ███    ███          ███ 
-                   ███    ███ ███     ▄█    ███   ███ ▀███▄ ███   ███         ▄█    ███     ███     ███    ███ ███   ▄███ ███  ███    ███    ▄█    ███ 
-                   ███    ███ █▀    ▄████████▀    ███   ▀█▀  ▀█████▀        ▄████████▀     ▄████▀   ████████▀  ████████▀  █▀    ▀██████▀   ▄████████▀  
-                   ███    ███                     ▀                                                                                                    
-      \n\n\n\n\n\n\n\n\n\n\n\n\n
-      ''')
-
-  time.sleep(2.5)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  os.system('cls')
-  time.sleep(.5)
-  os.system('color 7e')
-  time.sleep(.25)
-  os.system('color 8e')
-  time.sleep(.25)
-  os.system('color 0e')
-  time.sleep(.5)
-  
-  
-
-
-    
-def start_screen():
-
-  print('''\n\n\n\n\n\n\n
-                       ██████╗ ██╗███████╗███████╗    ████████╗ ██████╗     ██╗   ██╗ █████╗ ██╗     ██╗  ██╗ █████╗ ██╗     ██╗      █████╗ 
-                       ██╔══██╗██║██╔════╝██╔════╝    ╚══██╔══╝██╔═══██╗    ██║   ██║██╔══██╗██║     ██║  ██║██╔══██╗██║     ██║     ██╔══██╗
-                       ██████╔╝██║███████╗█████╗         ██║   ██║   ██║    ██║   ██║███████║██║     ███████║███████║██║     ██║     ███████║
-                       ██╔══██╗██║╚════██║██╔══╝         ██║   ██║   ██║    ╚██╗ ██╔╝██╔══██║██║     ██╔══██║██╔══██║██║     ██║     ██╔══██║
-                       ██║  ██║██║███████║███████╗       ██║   ╚██████╔╝     ╚████╔╝ ██║  ██║███████╗██║  ██║██║  ██║███████╗███████╗██║  ██║
-                       ╚═╝  ╚═╝╚═╝╚══════╝╚══════╝       ╚═╝    ╚═════╝       ╚═══╝  ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝
-                                                                                
-
-    
-    
-  ''')
-  time.sleep(1)
-  print('\n\n\n\n\n\n\n\n\n\n\n\n                                                                  P', end = "")
-  print_slow('ress Enter To Begin')
-  input('')
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  time.sleep(.20)
-  print('\n')
-  os.system('cls')
-  time.sleep(.01)
-  print_slow('\n\n\n\n\n\n\n                      Play At Your Own Risk!')
-  time.sleep(2.5)
-  os.system('cls')
-  time.sleep(1)
-
-
-
-
-
-
 def story_line():
   print_slow('\nOnce in time, The Nine Realms lived and worked harmoniously together, but that changed when the bottom realms revolted sending all 9 realms into chaos. Only one realm could save them, Asgard. The heavenly realm and home to some of the strongest warriors including Odin. Odin and the Valkyrie were able to stop the fighting but they were still no where close to peace. Due to Odins involvement in the war, he was less then liked by the lower realms, but at least there were no plans for war, thats what they thought....   ')
   time.sleep(5)
-  print_slow('....\nThe beast is getting closer to you, the moment you look back to take a peek at the beast you run into a tree, you find just enough strength to turn over and see the beast pounce directly towards you. Your Instinct kicks in to cover your face and... You snap to reality. It was just a dream. The first thing you see is a beer in hand. Theres a local asgardian band playing in the background, you start to remember that you were partying late the night before, while deep in thought a raven comes and lands on the bar in front. It caws, and it sounded like it almost said follow me so with no other plans that is exactly what you do. It leads you all the way to Odins Castle to meet with the man himself. ')
+  print_slow('....\nThe beast is getting closer to you, the moment you look back to take a peek at the beast you run into a tree, you find just enough strength to turn over and see the beast pounce directly towards you. Your instinct kicks in to cover your face and... You snap to reality. It was just a dream. The first thing you see is a beer in hand. Theres a local asgardian band playing in the background and you start to remember that you were partying late the night before. While deep in thought a raven comes and lands on the bar in front of you. It caws, and it sounded like it almost said follow me. Your mind wanted to ignore it, but your instincts pulled you towards listening to what you thought you heard. It leads you all the way to Odins Castle to meet with the man himself. ')
   time.sleep(5)       
   
       
 
 
-
-def intro_talk():
-  global player_name
-  print_slow('\n\n\n\n\n\n\n\n\n\n         *All Answers Are Character Sensitive And An Empty Response Is NOT An Acceptable Response!*')
-  time.sleep(2)
-  print_slow('\n            Feel Free To Let Us Know About Any Bugs Or Ideas For How To Improve Our Game!')
-  time.sleep(2.5)
-  os.system('color f')
-  os.system('cls')
-  time.sleep(.75)
-  story_line()
-  time.sleep(4)
-
-
-
-
-
 def players_name():
   global player_name
-  print_slow('\n\nOdin: What Is Your Name Being?')
+  print_slow('\nOdin: What Is Your Name Being?')
   player_name = input('\n> ').upper()
   while player_name == '':  
-    print_slow(f'\n\nOdin: That is UNACCEPTABLE!  I Require A Name!')
+    print_slow(f'\nOdin: That is UNACCEPTABLE!  I Require A Name!')
     player_name = input('\n>').upper()
   time.sleep(1)
-  print_slow(f'\n\nOdin: Is {player_name} the name by which you would liked to be called? Y/N')
+  print_slow(f'\nOdin: Is {player_name} the name by which you would liked to be called? Y/N')
   player_name_choice = input('\n>').upper()
   while player_name_choice != '':
     if player_name_choice == 'Y':
       time.sleep(1)
-      print_slow(f'\nOdin: AHHH yes that is what it was! Welcome to the Valkaryie {player_name}')
+      print_slow(f'\nOdin: AHHH yes that is what it was! Welcome to the Valkaryie {player_name}!')
       time.sleep(2)
       break
     if player_name_choice == 'N':
@@ -292,7 +273,7 @@ def class_select():
   global class_thing
   global player_name
   os.system('color f')
-  print_slow('\n\nOdin: What Class Were You Again? Archer, Mage, Warrior, or Thief:')
+  print_slow('\nOdin: What Class Were You Again? Archer, Mage, Warrior, or Thief:')
   class_thing = input(f'\n{player_name}: ').upper()
   while class_thing != ' ':
     if class_thing == 'ARCHER':
@@ -333,7 +314,7 @@ def big_choice():
   global player_name
   global class_thing
   time.sleep(1)
-  print_slow(f'\n\nOdin: Are You Sure {class_thing} Is What You Were?, Y/N?')
+  print_slow(f'\nOdin: Are You Sure {class_thing} Is What You Were?, Y/N?')
   choice = input(f'\n{player_name}: ').upper()
   while choice != ' ':
     if choice == 'Y':
@@ -368,7 +349,7 @@ def health():
 
   player_health = 90 + class_health
   time.sleep(1)
-  print_slow(f'\n\nYour Starting health Is {player_health}')
+  print_slow(f'\nYour Starting health Is {player_health}')
           
 
 
@@ -378,20 +359,20 @@ def heal():
   global player_name
   global player_health
   global class_health
-  print_slow('\n\nYou arrive at a heal totem would you like to use it? Y/N')
+  print_slow('\nYou arrive at a heal totem would you like to use it? Y/N')
   healing = input(f'\n{player_name}: ').upper()
   while healing != '':
     if healing == 'Y':
       player_health = 90 + class_health
-      print_slow(f'Healing Successful, You are now back up to {player_health} HP')
+      print_slow(f'\nHealing Successful, You are now back up to {player_health} HP')
       break
     if healing == 'N':
-      print_slow('Healing Denied, Continue on')
+      print_slow('\nHealing Denied, Continue on')
       break
     else:
       time.sleep(1)
       os.system('color 4')
-      print_slow('That is not an option try again')
+      print_slow('\nThat is not an option try again')
       time.sleep(1)
       os.system('color f')
       heal()
@@ -423,9 +404,9 @@ def player_attack(x):
 
 def giants_dialogue():
   global player_name
-  print_slow('\n\nOdin: Loki has been running rampant around the realms and I have finally snapped. I need you to to travel to Jotunheim to take him out. The adventure may be rough, but I think you are the person for this job. If you agree I can provide more information.')
+  print_slow('\nOdin: Loki has been running rampant around the realms and I have finally snapped. I need you to to travel to Jotunheim to take him out. The adventure may be rough, but I think you are the person for this job. If you agree I can provide more information.')
   time.sleep(3)
-  print_slow('\n\nOdin: So would you like to take on this task? Y/N?')
+  print_slow('\nOdin: So would you like to take on this task? Y/N?')
   giants_dialogue_choice = input(f'\n{player_name}: ').upper()
   while giants_dialogue_choice != ' ':
     if giants_dialogue_choice == 'Y':
@@ -454,17 +435,17 @@ def giants_dialogue():
 
 def the_plan():
     global player_name
-    print_slow('\n\nOdin: I must request that you take out Cayde the Frost Giant, Freyja, Fenrir and then Loki.')
+    print_slow('\nOdin: I must request that you take out Cayde the Frost Giant, Freyja, Fenrir and then Loki.')
     time.sleep(2)
-    print_slow('\n\nOdin: Are you still sure you are ready for this? Y/N')
+    print_slow('\nOdin: Are you still sure you are ready for this? Y/N')
     biggest_choice = input(f'\n{player_name}: ').upper()
     time.sleep(1)
     while biggest_choice != '':
         if biggest_choice == 'Y':
-            print_slow('\n\nOdin: FIGHT FOREVER GUARDIAN!!!')
+            print_slow('\nOdin: FIGHT FOREVER GUARDIAN!!!')
             break
         elif biggest_choice == 'N':
-            print_slow('\n\nOdin: YOU ARE A COMPLETE AND UTTER COWARD! Try that again or be banished from this realm!')  
+            print_slow('\nOdin: YOU ARE A COMPLETE AND UTTER COWARD! Try that again or be banished from this realm!')  
             the_plan()
             break
         else:
@@ -481,13 +462,12 @@ def the_plan():
 
 
 def  giants_dialogue2():
-  print_slow('''\n\nAfter listening to Odin you leave the castle to set out on your quest.\nAs you are walking you notice up ahead there is a cliff face that will not be scaleable making it a dead end, but just to the right of it theres a cave entrance.
-  ''')
+  print_slow('\nAfter listening to Odin you leave the castle to set out on your quest.As you are walking you notice up ahead there is a cliff face that will not be scaleable making it a dead end, but just to the right of it theres a cave entrance.')
   time.sleep(2.75)
-  print_slow('\n\nYou Can Either Quit and Give Up The Journey or Can Continue Into The Cave')
+  print_slow('\nYou Can Either Can Continue Into The Cave Quit and Give Up The Journey')
   time.sleep(.5)
-  print_slow('\nQ/C?')
-  cave_decision = input(f'\n\n{player_name}: ').upper()
+  print_slow('\nC/Q?')
+  cave_decision = input(f'\n{player_name}: ').upper()
   while cave_decision != ' ':
     if cave_decision == 'Q':
       time.sleep(1)
@@ -502,7 +482,7 @@ def  giants_dialogue2():
       break
     else:
       os.system('color 4')
-      print_slow('\n\nThat was not an option! Please Try Again')
+      print_slow('\nThat was not an option! Please Try Again')
       time.sleep(1)
       os.system('color f')
       giants_dialogue2()
@@ -515,8 +495,8 @@ def  giants_dialogue2():
 def cayde_dialogue():
   global player_name
   global class_thing
-  print_slow('\n\nYou look around to find the source of the sound. You look towards the cave entrance thinking that it could be a escape route if necessary. Thats when a loud crash echoes throughout the cave, so loud your ear rings from it. You whip around to see Cayde staring straight at with a demonic look in his eyes')
-  print_slow(f'\n\nCayde: You dumb {class_thing}! You want to come to my home territory and try to take me out?! You and Odin are more moronic than I imagined! Let us imagine for one second that you defeat me, Freyja will obliterate you back to another eon! Buuuttt.. we will not even get to that point because you are dead man! RAGHHHHHHHHHH')
+  print_slow('\nYou look around to find the source of the sound. You look towards the cave entrance thinking that it could be a escape route if necessary. Thats when a loud crash echoes throughout the cave, so loud your ear rings from it. You whip around to see Cayde staring straight at you with a demonic look in his eyes')
+  print_slow(f'\nCayde: You dumb {class_thing}! You want to come to my home territory and try to take me out?! You and Odin are more moronic than I imagined! Let us imagine for one second that you defeat me, Freyja will obliterate you back to another eon! Buuuttt.. we will not even get to that point because I will eliminate you right here right now! RAGHHHHHHHHHH')
 
 
 
@@ -532,10 +512,10 @@ def mini_boss_giant():
     boss_health = 200
     turn = 'Player'
     boss_attack = 35
-    print_slow('\n\nCAYDE CHARGES AT YOU!')
+    print_slow('\nCAYDE CHARGES AT YOU!')
     time.sleep(1)
-    print_slow('\n\nFight or Flee?')
-    move1 = input(f'\n\n{player_name}: ').upper()
+    print_slow('\nFight or Flee?')
+    move1 = input(f'\n{player_name}: ').upper()
     time.sleep(1)
     if move1 == 'FIGHT':
       while boss_health > 0 or player_health > 0:
@@ -575,14 +555,14 @@ def mini_boss_giant():
             RandomItem = random.randint(0,100)
             if RandomItem > 50:
               print_slow('\nWould you like to pickup this basic tank item? Y/N')
-              Pickup = input(f'\n\n{player_name}: ').upper()
+              Pickup = input(f'\n{player_name}: ').upper()
               if Pickup == 'Y':
                 BonusTankBasicItem()
               else:
                 print_slow('\nYou leave the item on the ground')
             else:
               print_slow('\n\nWould you like a basic thorns item? Y/N')
-              Pickup = input(f'\n\n{player_name}: ').upper()
+              Pickup = input(f'\n{player_name}: ').upper()
               if Pickup == "Y":
                 ThornsBasicItem()
               else:
@@ -591,14 +571,14 @@ def mini_boss_giant():
             RandomItem = random.randint(0,100)
             if RandomItem > 50:
               print_slow('\n\nWould you like to pick up this basic dodge item? Y/N')
-              Pickup = input(f'\n\n{player_name}: ').upper()
+              Pickup = input(f'\n{player_name}: ').upper()
               if Pickup == 'Y':
                 BasicDodgeItems()
               else:
                 print_slow('\nYou leave this item on the ground')
             else:
               print_slow("\n\nDo you want this basic counter item? Y/N")
-              Pickup = input(f'\n\n{player_name}: ').upper()
+              Pickup = input(f'\n{player_name}: ').upper()
               if Pickup == 'Y':
                 BasicCounterBuff()
               else:
@@ -607,14 +587,14 @@ def mini_boss_giant():
             RandomItem = random.randint(0,100)
             if RandomItem > 50:
               print_slow('\n\nDo you want a basic shield health item? Y/N')
-              Pickup = input(f'\n\n{player_name}: ').upper()
+              Pickup = input(f'\n{player_name}: ').upper()
               if Pickup == 'Y':
                 MageBasicHealthItem()
               else:
                 print_slow('\nYou dropped this item on the ground')
             else:
               print_slow('\n\nDo you want a basic shield chance item? Y/N')
-              Pickup = input(f'\n\n{player_name}: ').upper()
+              Pickup = input(f'\n{player_name}: ').upper()
               if Pickup == 'Y':
                 MageBasicChanceItem()
               else:
@@ -623,14 +603,14 @@ def mini_boss_giant():
             RandomITem = random.randint(0,100)
             if RandomITem > 50:
               print_slow('\n\nYou find a basic crit item would you like to pick it up? y/n')
-              Pickup = input(f'\n\n{player_name}: ').upper()
+              Pickup = input(f'\n{player_name}: ').upper()
               if Pickup == 'Y':
                 BasicArcherCrit()
               else:
                 print_slow('\nYou dropped the item')
             else:
               print_slow('\n\nYou find a basic strafe item on the ground would you like to pick it up? Y/N')
-              Pickup = input(f'\n\n{player_name}: ').upper()
+              Pickup = input(f'\n{player_name}: ').upper()
               if Pickup == 'Y':
                 BasicStrafeItem()
               else:
@@ -651,14 +631,14 @@ def post_cayde_dialogue():
   global player_health
   global player_name
   global class_thing
-  print_slow('\n\nThe cave turned out to be very short, having an exit not even half a mile passed the lifeless body of Cayde.\nYou exit the cave as lightning strikes in front of you.\nThe dust settles and Odin is kneeling in a godly stance. Odin stands up and looks at you in a very proud manner')
-  print_slow('\n\nOdin: Looks like I picked the right person for the job. Cayde was a nuisance and I am glad he is one less person I have to worry about')
+  print_slow('\nThe cave turned out to be very short, having an exit not even half a mile passed the lifeless body of Cayde.You exit the cave as lightning strikes in front of you.The dust settles and Odin is kneeling in a godly stance. Odin stands up and looks at you in a very proud manner')
+  print_slow('\nOdin: Looks like I picked the right person for the job. Cayde was a nuisance and I am glad he is one less person I have to worry about')
   if player_health > 45: 
-    print_slow(f'\n\n{player_name}:  It was an easy fight! Training was harder than Cayde!')
+    print_slow(f'\n{player_name}: It was an easy fight! Training was harder than Cayde!')
   if player_health < 45:
-    print_slow(f'\n\n{player_name}: It was a close fight, but I knew I was going to win the whole time!')  
-  print_slow(f'\n\nOdin: Unfortunately {class_thing} this is just the start. I need you to go to the World Tree and fight Freyja. Loki corrupted her mind and tricked her into thinking that he is the good guy. The thing is though if you just attack her stinky pp until she is on the verge of death she will snap out of it.')
-  print_slow(f'\n\nOdin: Now get out there {class_thing} and continue the fight to better the 9 realms!')
+    print_slow(f'\n{player_name}: It was a close fight, but I knew I was going to win the whole time!')  
+  print_slow(f'\nOdin: Unfortunately {class_thing} this is just the start. I need you to go to the World Tree and fight Freyja. Loki corrupted her mind and tricked her into thinking that he is the good guy. The thing is though if you just attack her stinky pp until she is on the verge of death she will snap out of it.')
+  print_slow(f'\nOdin: Now get out there {class_thing} and continue the fight to better the 9 realms!')
 
 
 
@@ -668,12 +648,12 @@ def freyja_dialogue():
   global player_name
   global class_thing
   time.sleep(1)
-  print_slow('\n\nIt takes several hours, but you finally reach the world tree. Its beauty is unmeasurable. It has more colors than on a rainbow, with leaves and branches sprouting everywhere. There are so many different species that its almost impossible to count.\nYou start to look around the tree to see where to start climbing. That is when you see Freyja standing on a branch only around 250 feet up. It looks like she is about to execute a Dwarf. ')
-  print_slow(f'\n\n{player_name}: Stop! Do not lay a hand on that dwarf you foul woman')
-  print_slow('\n\nYou grab onto a foot a flying beast and jump off onto the same branch as Freyja.')
-  print_slow(f'\n\nFreyja: Ah yes, you are this new upcoming {class_thing} I have heard so little about...Ha! Have you come here to *does hand air quotes* fix me? Not going to happen pesky {class_thing}')
-  print_slow(f'\n\n{player_name}: That is where you are wrong you wretch of god! I am not ordinary {class_thing}! I am {player_name} and I did not come to lose')
-  print_slow('\n\nYou charge at Freyja with your weapon ready')
+  print_slow('\nIt takes several hours, but you finally reach the world tree. Its beauty is unmeasurable. It has more colors than on a rainbow, with leaves and branches sprouting everywhere. There are so many different species that its almost impossible to count.\nYou start to look around the tree to see where to start climbing. That is when you see Freyja standing on a branch only around 250 feet up. It looks like she is about to execute a Dwarf. ')
+  print_slow(f'\n{player_name}: Stop! Do not lay a hand on that dwarf you foul woman')
+  print_slow('\nYou grab onto a foot a flying beast and jump off onto the same branch as Freyja.')
+  print_slow(f'\nFreyja: Ah yes, you are this new upcoming {class_thing} I have heard so little about...Ha! Have you come here to *does hand air quotes* fix me? Not going to happen pesky {class_thing}')
+  print_slow(f'\n{player_name}: That is where you are wrong you wretch of god! I am not ordinary {class_thing}! I am {player_name} and I did not come to lose')
+  print_slow('\nYou charge at Freyja with your weapon ready')
 
 
 def Freyja():
@@ -687,10 +667,10 @@ def Freyja():
     boss_health = 250
     turn = 'Player'
     boss_attack = 50
-    print_slow('\n\nThe Goddess Freyja appears!')
+    print_slow('\nThe Goddess Freyja appears!')
     time.sleep(1)
-    print_slow('\n\nFight or Flee?')
-    move1 = input(f'\n\n{player_name}: ').upper()
+    print_slow('\nFight or Flee?')
+    move1 = input(f'\n{player_name}: ').upper()
     time.sleep(1)
     if move1 == 'FIGHT':
       while boss_health > 0 or player_health > 0:
@@ -730,14 +710,14 @@ def Freyja():
             RandomItem = random.randint(0,100)
             if RandomItem > 50:
               print_slow('\nWould you like to pickup this basic tank item? Y/N')
-              Pickup = input(f'\n\n{player_name}: ')
+              Pickup = input(f'\n{player_name}: ')
               if Pickup == 'y':
                 BonusTankBasicItem()
               else:
                 print_slow('\nYou leave the item on the ground')
             else:
               print_slow('\n\nWould you like a basic thorns item? Y/N')
-              Pickup = input(f'\n\n{player_name}: ')
+              Pickup = input(f'\n{player_name}: ')
               if Pickup == "y":
                 ThornsBasicItem()
               else:
@@ -746,14 +726,14 @@ def Freyja():
             RandomItem = random.randint(0,100)
             if RandomItem > 50:
               print_slow('\n\nWould you like to pick up this basic dodge item? Y/N')
-              Pickup = input(f'\n\n{player_name}: ')
+              Pickup = input(f'\n{player_name}: ')
               if Pickup == 'y':
                 BasicDodgeItems()
               else:
                 print_slow('\nYou leave this item on the ground')
             else:
               print_slow("\n\nDo you want this basic counter item? Y/N")
-              Pickup = input(f'\n\n{player_name}: ')
+              Pickup = input(f'\n{player_name}: ')
               if Pickup == 'y':
                 BasicCounterBuff()
               else:
@@ -762,14 +742,14 @@ def Freyja():
             RandomItem = random.randint(0,100)
             if RandomItem > 50:
               print_slow('\n\nDo you want a basic shield health item? Y/N')
-              Pickup = input(f'\n\n{player_name}: ')
+              Pickup = input(f'\n{player_name}: ')
               if Pickup == 'y':
                 MageBasicHealthItem()
               else:
                 print_slow('\nYou dropped this item on the ground')
             else:
               print_slow('\n\nDo you want a basic shield chance item? Y/N')
-              Pickup = input(f'\n\n{player_name}: ')
+              Pickup = input(f'\n{player_name}: ')
               if Pickup == 'y':
                 MageBasicChanceItem()
               else:
@@ -778,14 +758,14 @@ def Freyja():
             RandomITem = random.randint(0,100)
             if RandomITem > 50:
               print_slow('\n\nYou find a basic crit item would you like to pick it up? y/n')
-              Pickup = input(f'\n\n{player_name}: ')
+              Pickup = input(f'\n{player_name}: ')
               if Pickup == 'y':
                 BasicArcherCrit()
               else:
                 print_slow('\nYou dropped the item')
             else:
               print_slow('\n\nYou find a basic strafe item on the ground would you like to pick it up? Y/N')
-              Pickup = input(f'\n\n{player_name}: ').upper()
+              Pickup = input(f'\n{player_name}: ').upper()
               if Pickup == 'y':
                 BasicStrafeItem()
               else:
@@ -813,7 +793,7 @@ def Freyja():
     
 
 def post_freyja_dialogue():
-  print('ppstinki')
+  input('')
 
 
 
@@ -1038,8 +1018,8 @@ def AmuletOfAbsoluteProtection():
 
 
 credits()
-start_screen()
-intro_talk() 
+intro_talk()
+story_line() 
 players_name()
  
 class_select()
